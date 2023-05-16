@@ -18,18 +18,18 @@ import com.inow.csp.output.customerRegistration.CustomerRegisterStartBean;
 import com.inow.csp.service.ICustomerRegistrationService;
 
 @RestController
-public class CustomerRegistration {
+public class CustomerRegistrationController {
 
 	@Autowired
 	ICustomerRegistrationService customerRegistrationServiceImpl;
 
 	private final ObjectMapper objectMapper;
 	
-	public CustomerRegistration(ObjectMapper objectMapper) {
+	public CustomerRegistrationController(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 	
-    @PostMapping("/msg/CustomerRegisterStartRq/json")
+    @PostMapping("/CustomerRegisterStart")
     public ResponseEntity<CustomerRegisterStartBean> handleCustomerRegisterStart(@RequestBody String requestBody) throws JsonMappingException, JsonProcessingException {
     	JsonNode jsonNode = objectMapper.readTree(requestBody);
         String policyNumber = jsonNode.get("policyNumber").asText();
