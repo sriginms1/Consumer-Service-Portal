@@ -30,7 +30,7 @@ public class CustomerRegistrationController {
     }
 	
     @PostMapping("/CustomerRegisterStart")
-    public ResponseEntity<CustomerRegisterStartBean> handleCustomerRegisterStart(@RequestBody String requestBody) throws JsonMappingException, JsonProcessingException {
+    public ResponseEntity<CustomerRegisterStartBean> handleCustomerRegisterStart(@RequestBody String requestBody) throws Exception {
     	JsonNode jsonNode = objectMapper.readTree(requestBody);
         String policyNumber = jsonNode.get("policyNumber").asText();
 

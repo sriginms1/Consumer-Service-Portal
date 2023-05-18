@@ -1,15 +1,28 @@
 package com.inow.csp.output.client;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ClientResponseBean {
+	
+	@JsonProperty("jwtToken")
+	private String jwtToken;
 
-	private String JWTToken;
+    public void setJWTToken(String jwtToken) {
+    	this.jwtToken = jwtToken;
+	}
 
-    public ClientResponseBean(String token) {
-        this.JWTToken = token;
+
+	public String getJWTToken() {
+        return jwtToken;
     }
 
-    public String getJWTToken() {
-        return JWTToken;
-    }
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return getJWTToken();
+	}
+    
+    
 
 }

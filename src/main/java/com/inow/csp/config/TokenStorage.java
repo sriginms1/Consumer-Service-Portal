@@ -5,6 +5,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.stereotype.Component;
 
+import com.inow.csp.output.client.ClientResponseBean;
+
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -43,7 +45,7 @@ public class TokenStorage {
         }
     }
 
-    public String retrieveToken() {
+    public ClientResponseBean retrieveToken() throws Exception {
         try {
             // Retrieve the encrypted token from the secure storage
             String encryptedToken = tokenCache.get("encryptedToken");
@@ -52,12 +54,13 @@ public class TokenStorage {
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedToken));
             String decryptedToken = new String(decryptedBytes, StandardCharsets.UTF_8);
-            return decryptedToken;
+            ClientResponseBean clientResponseBean = new ClientResponseBean();
+            clientResponseBean.setJWTToken(decryptedToken);
+            return clientResponseBean;
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-            // Handle decryption error
-            return null;
+           throw new Exception("Something went wrong while retrieving JWT token from cache");
         }
     }
 
 }
-
+//ClientResponseBean
