@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.inow.csp.output.customerRegistration.CustomerRegisterStartBean;
 import com.inow.csp.service.ICustomerRegistrationService;
 
+import reactor.core.publisher.Mono;
+
 @RestController
 public class CustomerRegistrationController {
 
@@ -30,15 +32,14 @@ public class CustomerRegistrationController {
     }
 	
     @PostMapping("/CustomerRegisterStart")
-    public ResponseEntity<CustomerRegisterStartBean> handleCustomerRegisterStart(@RequestBody String requestBody) throws Exception {
+    public Mono<ResponseEntity<CustomerRegisterStartBean>> handleCustomerRegisterStart(@RequestBody String requestBody) throws Exception {
     	JsonNode jsonNode = objectMapper.readTree(requestBody);
         String policyNumber = jsonNode.get("policyNumber").asText();
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        CustomerRegisterStartBean responseBody;
-        responseBody = customerRegistrationServiceImpl.fetchCustomerRegisterStartInfo(policyNumber);
-        return new ResponseEntity<>(responseBody, headers, HttpStatus.OK);
+        return customerRegistrationServiceImpl.fetchCustomerRegisterStartInfo(policyNumber)
+                .map(responseBody -> ResponseEntity.ok().headers(headers).body(responseBody))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 }
 
