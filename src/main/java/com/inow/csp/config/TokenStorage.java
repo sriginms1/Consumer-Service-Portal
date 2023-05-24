@@ -16,8 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class TokenStorage {
-    private static final String SECRET_KEY = "XnoYisKh99KdWNS5vNtaEnmiCcmE1CbO7OYa+TPPkXU=";
-    private static final String ENCRYPTION_ALGORITHM = "AES";
+    private static final String SECRET_KEY = Constants.SECRET_KEY_FOR_TOKEN_CACHE;
+    private static final String ENCRYPTION_ALGORITHM = Constants.ENCRYPTION_ALGORITHM_FOR_TOKEN_CACHE;
 
     private SecretKey secretKey;
     private Map<String, String> tokenCache;

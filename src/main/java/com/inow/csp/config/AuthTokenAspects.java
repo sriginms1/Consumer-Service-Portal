@@ -2,18 +2,20 @@ package com.inow.csp.config;
 
 
 import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
 
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inow.csp.controller.ClientController;
 import com.inow.csp.exception.CustomHttpClientException;
 import com.inow.csp.exception.CustomHttpServerException;
@@ -26,6 +28,7 @@ import com.inow.csp.output.client.ClientResponseBean;
 import reactor.core.publisher.Mono;
 
 @Component
+//@RequestScope
 public class AuthTokenAspects {
     
     private WebClient webClient;
@@ -73,18 +76,17 @@ public class AuthTokenAspects {
     
     public <T> Mono<T> makePostRequest(String uri, Object requestBody, Class<T> responseType) {
 
-        return webClient.post()
-                .uri(uri)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(requestBody))
-                .retrieve()
-                .onStatus(status -> status.is4xxClientError(), response -> handleClientError(response, uri, requestBody, responseType))
-                .onStatus(status -> status.is5xxServerError(), response -> handleServerError(response, uri, requestBody, responseType))
-                .bodyToMono(responseType);
-        
-    }
-    
+    	    return webClient.post()
+    	            .uri(uri)
+    	            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+    	            .accept(MediaType.APPLICATION_JSON)
+    	            .body(BodyInserters.fromValue(requestBody))
+    	            .retrieve()
+    	            .onStatus(status -> status.is4xxClientError(), response -> handleClientError(response, uri, requestBody, responseType))
+    	            .onStatus(status -> status.is5xxServerError(), response -> handleServerError(response, uri, requestBody, responseType))
+    	            .bodyToMono(responseType);
+    	}
+
     
     private Mono<? extends Throwable> handleClientError(ClientResponse response, String uri, Object requestBody, Class<?> responseType) {
         return response.bodyToMono(String.class)

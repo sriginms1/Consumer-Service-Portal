@@ -11,7 +11,9 @@ import com.inow.csp.annotation.AuthTokenRequired;
 import com.inow.csp.config.AuthTokenAspects;
 import com.inow.csp.config.Constants;
 import com.inow.csp.config.TokenStorage;
+import com.inow.csp.input.customerRegistration.CustomerRegValidationByAnswerRequestBean;
 import com.inow.csp.input.customerRegistration.CustomerRegisterStartRequestBean;
+import com.inow.csp.output.customerRegistration.CustomerRegValidationByAnswerResponseBean;
 import com.inow.csp.output.customerRegistration.CustomerRegisterStartBean;
 import com.inow.csp.service.ICustomerRegistrationService;
 
@@ -23,8 +25,8 @@ public class CustomerRegistrationServiceImpl implements ICustomerRegistrationSer
 
 	private final AuthTokenAspects authTokenAspects;
 
-	 @Autowired
-	 public CustomerRegistrationServiceImpl(WebClient webClient, TokenStorage tokenStorage, AuthTokenAspects authTokenAspects) {
+
+	 public CustomerRegistrationServiceImpl(AuthTokenAspects authTokenAspects) {
 	        this.authTokenAspects = authTokenAspects;	
 	 }
 	 
@@ -46,6 +48,13 @@ public class CustomerRegistrationServiceImpl implements ICustomerRegistrationSer
 		  
     }
 	
-	                
+	@Override
+	@AuthTokenRequired
+	public Mono<CustomerRegValidationByAnswerResponseBean> validateCustomerRegisterByAnswer(CustomerRegValidationByAnswerRequestBean requestBean)  {
+		 
+		 String uri =  Constants.VALIDATE_CUSTOMER_REG_BY_ANSWER_URI_PART; 
+		 return authTokenAspects.makePostRequest(uri, requestBean, CustomerRegValidationByAnswerResponseBean.class);
+		  
+    }                
 	
 }
