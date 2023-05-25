@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inow.csp.input.customerRegistration.CustomerRegValidationByAnswerRequestBean;
+import com.inow.csp.output.ResponseBean;
 import com.inow.csp.output.customerRegistration.CustomerRegValidationByAnswerResponseBean;
 import com.inow.csp.output.customerRegistration.CustomerRegisterStartBean;
 import com.inow.csp.service.ICustomerRegistrationService;
@@ -34,7 +35,7 @@ public class CustomerRegistrationController {
     }
 	
     @PostMapping("/CustomerRegisterStart")
-    public Mono<ResponseEntity<CustomerRegisterStartBean>> handleCustomerRegisterStart(@RequestBody String requestBody) throws Exception {
+    public  <T extends ResponseBean> Mono<?> handleCustomerRegisterStart(@RequestBody String requestBody) throws Exception {
     	JsonNode jsonNode = objectMapper.readTree(requestBody);
         String policyNumber = jsonNode.get("policyNumber").asText();
         HttpHeaders headers = new HttpHeaders();
@@ -45,7 +46,7 @@ public class CustomerRegistrationController {
     }
     
     @PostMapping("/ValidateCustomerRegisterByAnswer")
-    public Mono<ResponseEntity<CustomerRegValidationByAnswerResponseBean>> validateCustomerRegisterByAnswer(@RequestBody CustomerRegValidationByAnswerRequestBean requestBean) throws Exception {
+    public <T extends ResponseBean> Mono<?> validateCustomerRegisterByAnswer(@RequestBody CustomerRegValidationByAnswerRequestBean requestBean) throws Exception {
     	
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

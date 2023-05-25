@@ -1,7 +1,22 @@
 package com.inow.csp.exception;
 
-public class CustomHttpClientException extends Throwable {
-	    public CustomHttpClientException(String message) {
-	        super(message);
-	    }
+import org.springframework.http.HttpStatusCode;
+
+public class CustomHttpClientException extends CustomHttpException {
+	private HttpStatusCode status;
+    private String errorMessage;
+
+    public CustomHttpClientException(HttpStatusCode httpStatusCode, String errorMessage) {
+    	super(httpStatusCode, errorMessage);
+        this.status = httpStatusCode;
+        this.errorMessage = errorMessage;
+    }
+
+    public HttpStatusCode getStatus() {
+        return status;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 }

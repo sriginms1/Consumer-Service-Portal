@@ -1,12 +1,14 @@
 package com.inow.csp.output.customerRegistration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.inow.csp.output.ResponseBean;
+
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class CustomerRegValidationByAnswerResponseBean {
+public class CustomerRegValidationByAnswerResponseBean implements ResponseBean {
 
     @JsonProperty("id")
     private String id;

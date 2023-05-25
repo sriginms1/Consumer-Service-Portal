@@ -1,18 +1,16 @@
 package com.inow.csp.service.impl;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inow.csp.annotation.AuthTokenRequired;
 import com.inow.csp.config.AuthTokenAspects;
 import com.inow.csp.config.Constants;
-import com.inow.csp.config.TokenStorage;
 import com.inow.csp.input.customerRegistration.CustomerRegValidationByAnswerRequestBean;
 import com.inow.csp.input.customerRegistration.CustomerRegisterStartRequestBean;
+import com.inow.csp.output.ExceptionBean;
+import com.inow.csp.output.ResponseBean;
 import com.inow.csp.output.customerRegistration.CustomerRegValidationByAnswerResponseBean;
 import com.inow.csp.output.customerRegistration.CustomerRegisterStartBean;
 import com.inow.csp.service.ICustomerRegistrationService;
@@ -32,7 +30,7 @@ public class CustomerRegistrationServiceImpl implements ICustomerRegistrationSer
 	 
 	@Override
 	@AuthTokenRequired
-	public Mono<CustomerRegisterStartBean> fetchCustomerRegisterStartInfo(String policyNumber)  {
+	public Mono<? extends ResponseBean> fetchCustomerRegisterStartInfo(String policyNumber)  {
 		 
 		 ObjectMapper objectMapper = new ObjectMapper();
 		 String uri =  Constants.CUSTOMER_REG_START_URI_PART; 
@@ -50,11 +48,12 @@ public class CustomerRegistrationServiceImpl implements ICustomerRegistrationSer
 	
 	@Override
 	@AuthTokenRequired
-	public Mono<CustomerRegValidationByAnswerResponseBean> validateCustomerRegisterByAnswer(CustomerRegValidationByAnswerRequestBean requestBean)  {
+	public Mono<? extends ResponseBean> validateCustomerRegisterByAnswer(CustomerRegValidationByAnswerRequestBean requestBean)  {
 		 
 		 String uri =  Constants.VALIDATE_CUSTOMER_REG_BY_ANSWER_URI_PART; 
 		 return authTokenAspects.makePostRequest(uri, requestBean, CustomerRegValidationByAnswerResponseBean.class);
-		  
+				 
+		
     }                
 	
 }
