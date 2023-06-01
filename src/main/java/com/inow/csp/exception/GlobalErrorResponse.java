@@ -2,19 +2,19 @@ package com.inow.csp.exception;
 
 public class GlobalErrorResponse {
     private String errorMessage;
-    private String errorCode;
+    private Integer statusCode;
 
-    public GlobalErrorResponse(String errorMessage, String errorCode) {
+    public GlobalErrorResponse(String errorMessage, Integer statusCode) {
         this.errorMessage = errorMessage;
-        this.errorCode = errorCode;
+        this.statusCode = statusCode;
     }
 
     public String getErrorMessage() {
         return errorMessage;
     }
 
-    public String getErrorCode() {
-        return errorCode;
+    public Integer getStatusCode() {
+        return statusCode;
     }
 
 }

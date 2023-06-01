@@ -10,7 +10,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<GlobalErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
 		String errorMessage = ex.getMessage();
-		String errorCode = extractErrorCode(HttpStatus.NOT_FOUND);
+		Integer errorCode = HttpStatus.NOT_FOUND.value();
         GlobalErrorResponse errorResponse = new GlobalErrorResponse(errorMessage, errorCode);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomNullPointerException.class)
     public ResponseEntity<GlobalErrorResponse> handleCustomNullPointerException(CustomNullPointerException ex) {
     	String errorMessage = ex.getMessage();
-    	String errorCode = extractErrorCode(HttpStatus.BAD_REQUEST);
+    	Integer errorCode = HttpStatus.BAD_REQUEST.value();
         GlobalErrorResponse errorResponse = new GlobalErrorResponse(errorMessage, errorCode);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
@@ -26,13 +26,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<GlobalErrorResponse> handleException(Exception ex) {
     	String errorMessage = ex.getMessage();
-    	String errorCode = extractErrorCode(HttpStatus.INTERNAL_SERVER_ERROR);
+    	Integer errorCode = HttpStatus.INTERNAL_SERVER_ERROR.value();
         GlobalErrorResponse errorResponse = new GlobalErrorResponse(errorMessage, errorCode);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-    }
-    
-    private String extractErrorCode(HttpStatus httpStatus) {
-        return String.valueOf(httpStatus.value());
     }
 
 }
