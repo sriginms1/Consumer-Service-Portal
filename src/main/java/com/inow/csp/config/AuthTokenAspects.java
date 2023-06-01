@@ -80,7 +80,6 @@ public class AuthTokenAspects {
     
     @SuppressWarnings("unchecked")
 	public <T> Mono<T> makePostRequest(String uri, Object requestBody, Class<T> responseType) {
-
 	    return webClient.post()
 	            .uri(uri)
 	            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inow.csp.input.customerRegistration.CustomerRegValidationByAnswerRequestBean;
+import com.inow.csp.input.customerRegistration.CustomerRegisterSendPinRequestBean;
 import com.inow.csp.output.ResponseBean;
 import com.inow.csp.output.customerRegistration.CustomerRegValidationByAnswerResponseBean;
 import com.inow.csp.output.customerRegistration.CustomerRegisterStartBean;
@@ -51,6 +52,16 @@ public class CustomerRegistrationController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return customerRegistrationServiceImpl.validateCustomerRegisterByAnswer(requestBean)
+                .map(responseBody -> ResponseEntity.ok().headers(headers).body(responseBody))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+    
+    @PostMapping("/SendCustomerRegisterPin")
+    public <T extends ResponseBean> Mono<?> sendCustomerRegisterPin(@RequestBody CustomerRegisterSendPinRequestBean requestBean) throws Exception {
+    	
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return customerRegistrationServiceImpl.sendCustomerRegisterPin(requestBean)
                 .map(responseBody -> ResponseEntity.ok().headers(headers).body(responseBody))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }

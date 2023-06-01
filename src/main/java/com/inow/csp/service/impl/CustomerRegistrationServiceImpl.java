@@ -8,10 +8,12 @@ import com.inow.csp.annotation.AuthTokenRequired;
 import com.inow.csp.config.AuthTokenAspects;
 import com.inow.csp.config.Constants;
 import com.inow.csp.input.customerRegistration.CustomerRegValidationByAnswerRequestBean;
+import com.inow.csp.input.customerRegistration.CustomerRegisterSendPinRequestBean;
 import com.inow.csp.input.customerRegistration.CustomerRegisterStartRequestBean;
 import com.inow.csp.output.ExceptionBean;
 import com.inow.csp.output.ResponseBean;
 import com.inow.csp.output.customerRegistration.CustomerRegValidationByAnswerResponseBean;
+import com.inow.csp.output.customerRegistration.CustomerRegisterSendPinResponseBean;
 import com.inow.csp.output.customerRegistration.CustomerRegisterStartBean;
 import com.inow.csp.service.ICustomerRegistrationService;
 
@@ -51,9 +53,15 @@ public class CustomerRegistrationServiceImpl implements ICustomerRegistrationSer
 	public Mono<? extends ResponseBean> validateCustomerRegisterByAnswer(CustomerRegValidationByAnswerRequestBean requestBean)  {
 		 
 		 String uri =  Constants.VALIDATE_CUSTOMER_REG_BY_ANSWER_URI_PART; 
-		 return authTokenAspects.makePostRequest(uri, requestBean, CustomerRegValidationByAnswerResponseBean.class);
-				 
+		 return authTokenAspects.makePostRequest(uri, requestBean, CustomerRegValidationByAnswerResponseBean.class);		 
 		
-    }                
+    }
+
+	@Override
+	@AuthTokenRequired
+	public Mono<? extends ResponseBean> sendCustomerRegisterPin(CustomerRegisterSendPinRequestBean requestBean){
+		 String uri =  Constants.CUSTOMER_REG_SEND_PIN_REQ_URI_PART;
+		 return authTokenAspects.makePostRequest(uri, requestBean, CustomerRegisterSendPinResponseBean.class);
+	}                
 	
 }
